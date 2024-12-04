@@ -81,6 +81,12 @@
   <ItemGroup>
     <Folder Include="models\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\server\server.csproj">
+      <Project>{3DBCB70E-878B-4724-9E70-03C659D15EDD}</Project>
+      <Name>server</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
