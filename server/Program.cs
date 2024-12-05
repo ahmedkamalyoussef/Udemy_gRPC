@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using Greet;
+using Grpc.Core;
 using System;
 using System.IO;
 
@@ -14,6 +15,7 @@ namespace server
             {
                 s = new Server()
                 {
+                    Services = { GreetingService.BindService(new GreetingServiceImp()) },
                     Ports = { new ServerPort("localhost", port, ServerCredentials.Insecure) }
                 };
                 s.Start();
@@ -27,8 +29,7 @@ namespace server
             }
             finally
             {
-                if (s != null)
-                    s.ShutdownAsync().Wait();
+                s?.ShutdownAsync().Wait();
 
 
             }
