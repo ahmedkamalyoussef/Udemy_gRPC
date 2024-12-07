@@ -30,8 +30,6 @@ namespace server
             finally
             {
                 s?.ShutdownAsync().Wait();
-
-
             }
         }
     }

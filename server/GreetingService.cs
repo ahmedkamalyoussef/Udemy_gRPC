@@ -22,5 +22,18 @@ namespace server
             foreach (var i in Enumerable.Range(1, 10))
                 await responseStream.WriteAsync(new GreetingManyResponse() { Result = result });
         }
+
+        public override async Task GreetEveryone(IAsyncStreamReader<GreetingEveryoneRequest> requestStream, IServerStreamWriter<GreetingEveryoneResponse> responseStream, ServerCallContext context)
+        {
+            while (await requestStream.MoveNext())
+            {
+                Console.WriteLine("received the request");
+                if(requestStream.Current.Greeting.FirstName=="three")
+                    Console.WriteLine("heeeeeeeeeeeereeeeeeeeeeeee threeeeeeeeeeeeeeeeeeeeeee");
+                if(requestStream.Current.Greeting.FirstName!="three")
+                    await responseStream.WriteAsync(new GreetingEveryoneResponse() 
+                        { Result = requestStream.Current.Greeting.FirstName + " " + requestStream.Current.Greeting.LastName });
+            }
+        }
     }
 }

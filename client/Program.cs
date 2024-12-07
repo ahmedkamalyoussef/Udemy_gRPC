@@ -17,18 +17,67 @@ namespace client
                     Console.WriteLine("connected");
             });
             var client = new GreetingService.GreetingServiceClient(channel);
-            var greeting = new Greeting()
+            var greetings = new[]
             {
-                FirstName = "ahmed",
-                LastName = "kamal"
+                new Greeting()
+                {
+                    FirstName = "one",
+                    LastName = "one"
+                },
+                new Greeting()
+                {
+                    FirstName = "two",
+                    LastName = "two"
+                },
+                new Greeting()
+                {
+                    FirstName = "three",
+                    LastName = "three"
+                },
+                new Greeting()
+                {
+                    FirstName = "four",
+                    LastName = "four"
+                },
+                new Greeting()
+                {
+                    FirstName = "five",
+                    LastName = "five"
+                }
             };
-            var request = new GreetingManyRequest() { Greeting = greeting };
-            var response = client.GreetManyTimes(request);
-            while (await response.ResponseStream.MoveNext())
+            var g = new Greeting()
             {
-                Console.WriteLine(response.ResponseStream.Current.Result);
-                await Task.Delay(400);
+                FirstName = "five",
+                LastName = "five"
+            };
+            var g2 = new Greeting()
+            {
+                FirstName = "hhhhhhhhhhhhhhhhhhhhhhhhh",
+                LastName = "hhhhhhhhhhhhhhhhhhhhhhhhhhh"
+            };
+            var streme = client.GreetEveryone();
+            // foreach (var greeting in greetings)
+            // {
+            //     await streme.RequestStream.WriteAsync(new GreetingEveryoneRequest() { Greeting = greeting });
+            // }
+            for (int i = 0; i < 15; i++)
+            {
+                await streme.RequestStream.WriteAsync(new GreetingEveryoneRequest() { Greeting = g });
+                
             }
+            await streme.RequestStream.CompleteAsync();
+            while (await streme.ResponseStream.MoveNext())
+            {
+                Console.WriteLine(streme.ResponseStream.Current.Result);
+                await Task.Delay(1000);
+            }
+            // var request = new GreetingManyRequest() { Greeting = greeting };
+            // var response = client.GreetManyTimes(request);
+            // while (await response.ResponseStream.MoveNext())
+            // {
+            //     Console.WriteLine(response.ResponseStream.Current.Result);
+            //     await Task.Delay(400);
+            // }
             #region sum task
             //var client = new SumService.SumServiceClient(channel);
             //var arguments = new Arguments()
